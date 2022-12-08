@@ -1,7 +1,8 @@
-package br.com.wildsnow.mercapp
+package br.com.wildsnow.mercapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import br.com.wildsnow.mercapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
