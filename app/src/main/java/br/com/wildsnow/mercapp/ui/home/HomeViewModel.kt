@@ -9,12 +9,12 @@ class HomeViewModel: ViewModel(){
 
     val name = "Grocery List"
 
-    private val _items = MutableLiveData<MutableList<String>>(mutableListOf())
-    val items: LiveData<MutableList<String>>
+    private val _items: MutableLiveData<List<String>> = MutableLiveData(listOf())
+    val items: LiveData<List<String>>
         get() = _items
 
     fun addItem() {
-        _items.value?.add("New item")
+        _items.postValue(_items.value!!.plus("New item"))
         Timber.d("List now has ${(_items.value?.size) ?: -1} items")
     }
 

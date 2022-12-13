@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import br.com.wildsnow.mercapp.R
 import br.com.wildsnow.mercapp.databinding.FragmentHomeBinding
-import br.com.wildsnow.mercapp.ui.home.HomeViewModel
+import timber.log.Timber
 
 /**
  * A simple [Fragment] subclass.
@@ -27,6 +28,15 @@ class HomeFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
         binding.homeViewModel = homeViewModel
+
+        val adapter = HomeListAdapter()
+        binding.items.adapter = adapter
+
+        homeViewModel.items.observe(viewLifecycleOwner) {
+            it?.let {
+                adapter.submitList(it)
+            }
+        }
 
         return binding.root
     }
