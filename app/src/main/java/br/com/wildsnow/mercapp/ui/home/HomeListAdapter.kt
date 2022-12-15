@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.wildsnow.mercapp.databinding.ListItemHomeBinding
 
-class HomeListAdapter: ListAdapter<String, HomeListAdapter.ViewHolder>(DiffCallback()) {
+class HomeListAdapter: ListAdapter<CartItem, HomeListAdapter.ViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -16,7 +16,7 @@ class HomeListAdapter: ListAdapter<String, HomeListAdapter.ViewHolder>(DiffCallb
         holder.bind(getItem(position))
     }
 
-    class ViewHolder private constructor(val binding: ListItemHomeBinding):
+    class ViewHolder private constructor(private val binding: ListItemHomeBinding):
         RecyclerView.ViewHolder(binding.root) {
 
         companion object {
@@ -27,18 +27,18 @@ class HomeListAdapter: ListAdapter<String, HomeListAdapter.ViewHolder>(DiffCallb
             }
         }
 
-        fun bind(item: String) {
+        fun bind(item: CartItem) {
             binding.product = item
             binding.executePendingBindings()
         }
     }
 
-    class DiffCallback: DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
+    class DiffCallback: DiffUtil.ItemCallback<CartItem>() {
+        override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+        override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
             return oldItem == newItem
         }
 
