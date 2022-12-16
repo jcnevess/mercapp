@@ -38,17 +38,18 @@
             android:id="@+id/multiplierText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="@dimen/list_item_padding"
             android:text="@string/multiplier_sign"
             app:layout_constraintBaseline_toBaselineOf="@+id/itemQuantityText"
             app:layout_constraintEnd_toStartOf="@+id/itemNameText"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/itemQuantityText" />
 
-        <!-- TODO: Change width to match constraint -->
         <TextView
             android:id="@+id/itemNameText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingStart="@dimen/list_item_padding"
             app:layout_constraintBaseline_toBaselineOf="@+id/multiplierText"
             app:layout_constraintEnd_toStartOf="@+id/itemUnitPriceText"
             app:layout_constraintHorizontal_bias="0.5"
@@ -61,23 +62,25 @@
             android:id="@+id/itemUnitPriceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="@dimen/list_item_padding"
             app:layout_constraintBaseline_toBaselineOf="@+id/itemNameText"
             app:layout_constraintEnd_toStartOf="@+id/itemTotalPriceText"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/itemNameText"
             tools:text="TextView"
-            android:text="@{String.valueOf(product.unitPrice)}"/>
+            android:text="@{@string/formatter_currency(product.unitPrice)}"/>
 
         <TextView
             android:id="@+id/itemTotalPriceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingStart="@dimen/list_item_padding"
             app:layout_constraintBaseline_toBaselineOf="@+id/itemUnitPriceText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/itemUnitPriceText"
             tools:text="TextView"
-            android:text="@{String.valueOf(product.getTotalPrice())}"
+            android:text="@{@string/formatter_currency(product.getTotalPrice())}"
             android:layout_marginEnd="@dimen/marginDefault"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
