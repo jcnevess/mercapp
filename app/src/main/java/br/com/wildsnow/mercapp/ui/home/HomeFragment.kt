@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import br.com.wildsnow.mercapp.R
 import br.com.wildsnow.mercapp.databinding.FragmentHomeBinding
+import com.google.android.material.snackbar.Snackbar
 
 
 private const val QUANTITY_PICKER_MIN_VALUE = 1
@@ -72,12 +73,26 @@ class HomeFragment : Fragment() {
                     productNameEdit.visibility = View.VISIBLE
                     addItemButton.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_done_24, activity?.theme))
                     addItemButton.setOnClickListener {
-                        homeViewModel!!.doneAddingItem(productNameEdit.text.toString(), quantityPicker.value)
+                        if(inputIsValid()) {
+                            homeViewModel!!.doneAddingItem(productNameEdit.text.toString(), quantityPicker.value)
+                        } else {
+                            showErrorMessage()
+                        }
                     }
                 }
             }
         }
 
         return binding.root
+    }
+
+    private fun inputIsValid() = !binding.productNameEdit.text.isNullOrBlank()
+
+    private fun showErrorMessage() {
+        Snackbar.make(
+            requireView(),
+            resources.getString(R.string.empty_product_error),
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 }

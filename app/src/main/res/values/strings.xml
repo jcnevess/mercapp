@@ -4,6 +4,6 @@
     <string name="multiplier_sign">x</string>
     <string name="hint_product">Product</string>
     <string name="cd_add_item">Add item</string>
-
+    <string name="empty_product_error">Enter a valid product name</string>
     <string name="formatter_currency">%.2f</string>
 </resources>
