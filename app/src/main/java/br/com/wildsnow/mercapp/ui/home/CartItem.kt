@@ -1,9 +1,8 @@
 package br.com.wildsnow.mercapp.ui.home
 
-data class CartItem(val id: Long,
+data class CartItem(var name: String,
                     var quantity: Int,
-                    var name: String,
-                    var unitPrice: Double) {
+                    var unitPrice: Double?) {
 
-    fun getTotalPrice() = quantity * unitPrice
+    fun getTotalPrice() = unitPrice?.times(quantity)
 }

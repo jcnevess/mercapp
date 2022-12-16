@@ -35,7 +35,7 @@ class HomeListAdapter: ListAdapter<CartItem, HomeListAdapter.ViewHolder>(DiffCal
 
     class DiffCallback: DiffUtil.ItemCallback<CartItem>() {
         override fun areItemsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: CartItem, newItem: CartItem): Boolean {

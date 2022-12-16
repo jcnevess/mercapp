@@ -13,46 +13,74 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.HomeFragment">
+        tools:context=".ui.home.HomeFragment"
+        android:layout_marginHorizontal="@dimen/marginDefault"
+        android:layout_marginTop="@dimen/marginDefault">
 
         <TextView
             android:id="@+id/listNameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/verticalMarginComponents"
             android:text="@{homeViewModel.name}"
-            android:textSize="16sp"
+            android:textSize="@dimen/textSize"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="@dimen/verticalMarginComponents"
-            tools:text="List"/>
+            tools:text="List" />
 
-        <Button
+        <NumberPicker
+            android:id="@+id/quantityPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/productNameEdit"
+            app:layout_constraintEnd_toStartOf="@+id/productNameEdit"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/productNameEdit"
+            android:visibility="invisible"
+            tools:visibility="visible"/>
+
+        <EditText
+            android:id="@+id/productNameEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize"
+            android:hint="@string/hint_product"
+            app:layout_constraintEnd_toStartOf="@+id/addItemButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/quantityPicker"
+            app:layout_constraintTop_toBottomOf="@id/listNameText"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            android:autofillHints="none"
+            android:inputType="text" />
+
+        <ImageView
             android:id="@+id/addItemButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add"
-            app:layout_constraintTop_toBottomOf="@id/listNameText"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="@dimen/verticalMarginComponents"
-            android:onClick="@{() -> homeViewModel.addItem()}"/>
+            android:src="@drawable/ic_baseline_add_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/productNameEdit"
+            app:layout_constraintTop_toTopOf="@id/productNameEdit"
+            app:layout_constraintBottom_toBottomOf="@id/productNameEdit"
+            android:contentDescription="@string/cd_add_item" />
 
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/addItemButton"
+            android:layout_marginTop="@dimen/verticalMarginComponents"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginVertical="@dimen/verticalMarginComponents"
-            tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="308dp">
+            app:layout_constraintTop_toBottomOf="@id/addItemButton">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/items"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

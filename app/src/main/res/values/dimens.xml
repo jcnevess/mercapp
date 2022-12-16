@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="verticalMarginComponents">12dp</dimen>
-    <dimen name="marginDefault">15dp</dimen>
+    <dimen name="marginDefault">10dp</dimen>
+    <dimen name="textSize">16sp</dimen>
 </resources>
