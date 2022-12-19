@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
             wrapSelectorWheel = false
         }
 
-        val adapter = HomeListAdapter()
+        val adapter = HomeListAdapter(homeViewModel)
         binding.items.adapter = adapter
 
         homeViewModel.items.observe(viewLifecycleOwner) {
