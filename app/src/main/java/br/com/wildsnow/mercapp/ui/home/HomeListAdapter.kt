@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.wildsnow.mercapp.databinding.ListItemHomeBinding
-import timber.log.Timber
 
 class HomeListAdapter(private val homeViewModel: HomeViewModel) :
     ListAdapter<CartItem, HomeListAdapter.ViewHolder>(DiffCallback()) {
@@ -18,25 +17,10 @@ class HomeListAdapter(private val homeViewModel: HomeViewModel) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
-
-        holder.binding.itemNameEdit.setOnEditorActionListener { textView, actionId, keyEvent ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                homeViewModel.editItemName(holder.adapterPosition, holder.binding.itemNameEdit.text.toString())
-                holder.binding.itemNameEdit.visibility = View.INVISIBLE
-                holder.binding.itemNameText.visibility = View.VISIBLE
-                return@setOnEditorActionListener true
-            }
-            return@setOnEditorActionListener false
-        }
-
-        holder.binding.itemNameText.setOnClickListener {
-            holder.binding.itemNameText.visibility = View.INVISIBLE
-            holder.binding.itemNameEdit.visibility = View.VISIBLE
-        }
+        holder.bind(getItem(position), homeViewModel)
     }
 
-    class ViewHolder private constructor(val binding: ListItemHomeBinding) :
+    class ViewHolder private constructor(private val binding: ListItemHomeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         companion object {
@@ -47,8 +31,23 @@ class HomeListAdapter(private val homeViewModel: HomeViewModel) :
             }
         }
 
-        fun bind(item: CartItem) {
+        fun bind(item: CartItem, homeViewModel: HomeViewModel) {
             binding.product = item
+
+            binding.itemNameEdit.setOnEditorActionListener { textView, actionId, keyEvent ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    homeViewModel.editItemName(adapterPosition, binding.itemNameEdit.text.toString())
+                    binding.itemNameEdit.visibility = View.INVISIBLE
+                    binding.itemNameText.visibility = View.VISIBLE
+                    return@setOnEditorActionListener true
+                }
+                return@setOnEditorActionListener false
+            }
+
+            binding.itemNameText.setOnClickListener {
+                binding.itemNameText.visibility = View.INVISIBLE
+                binding.itemNameEdit.visibility = View.VISIBLE
+            }
         }
     }
 
