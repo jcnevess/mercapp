@@ -53,7 +53,8 @@
             android:visibility="invisible"
             tools:visibility="visible"
             android:autofillHints="none"
-            android:inputType="text" />
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
 
         <ImageView
             android:id="@+id/addItemButton"

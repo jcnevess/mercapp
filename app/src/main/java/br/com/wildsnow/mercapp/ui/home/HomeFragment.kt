@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
@@ -39,6 +40,18 @@ class HomeFragment : Fragment() {
             minValue = QUANTITY_PICKER_MIN_VALUE
             maxValue = QUANTITY_PICKER_MAX_VALUE
             wrapSelectorWheel = false
+        }
+
+        binding.productNameEdit.setOnEditorActionListener { textView, actionId, keyEvent ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if(inputIsValid()) {
+                    homeViewModel.doneAddingItem(binding.productNameEdit.text.toString(), binding.quantityPicker.value)
+                } else {
+                    showErrorMessage()
+                }
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
         }
 
         val adapter = HomeListAdapter(homeViewModel)
