@@ -112,7 +112,7 @@
             android:layout_height="wrap_content"
             android:autofillHints="none"
             android:hint="Unit Price"
-            android:inputType="text"
+            android:inputType="numberDecimal"
             android:paddingStart="@dimen/list_item_padding"
             android:text="@{@string/formatter_currency(product.unitPrice)}"
             android:visibility="gone"
@@ -120,7 +120,8 @@
             app:layout_constraintEnd_toStartOf="@+id/itemTotalPriceText"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/itemNameText"
-            tools:text="TextView" />
+            tools:text="TextView"
+            android:imeOptions="actionDone"/>
 
         <TextView
             android:id="@+id/itemTotalPriceText"

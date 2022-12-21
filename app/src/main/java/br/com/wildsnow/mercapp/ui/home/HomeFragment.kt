@@ -34,8 +34,6 @@ class HomeFragment : Fragment() {
 
         binding.homeViewModel = homeViewModel
 
-        binding.quantityPicker.minValue = 0
-
         binding.quantityPicker.apply {
             minValue = QUANTITY_PICKER_MIN_VALUE
             maxValue = QUANTITY_PICKER_MAX_VALUE
@@ -44,7 +42,7 @@ class HomeFragment : Fragment() {
 
         binding.productNameEdit.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if(inputIsValid()) {
+                if(nameIsValid()) {
                     homeViewModel.doneAddingItem(binding.productNameEdit.text.toString(), binding.quantityPicker.value)
                 } else {
                     showErrorMessage()
@@ -86,7 +84,7 @@ class HomeFragment : Fragment() {
                     productNameEdit.visibility = View.VISIBLE
                     addItemButton.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_done_24, activity?.theme))
                     addItemButton.setOnClickListener {
-                        if(inputIsValid()) {
+                        if(nameIsValid()) {
                             homeViewModel!!.doneAddingItem(productNameEdit.text.toString(), quantityPicker.value)
                         } else {
                             showErrorMessage()
@@ -99,12 +97,12 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun inputIsValid() = !binding.productNameEdit.text.isNullOrBlank()
+    private fun nameIsValid() = !binding.productNameEdit.text.isNullOrBlank()
 
     private fun showErrorMessage() {
         Snackbar.make(
             requireView(),
-            resources.getString(R.string.empty_product_error),
+            R.string.invalid_input_error,
             Snackbar.LENGTH_LONG
         ).show()
     }

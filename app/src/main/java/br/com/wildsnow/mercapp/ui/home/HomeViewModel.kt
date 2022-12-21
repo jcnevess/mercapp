@@ -35,4 +35,20 @@ class HomeViewModel: ViewModel(){
         }
     }
 
+    fun editItemUnitPrice(position: Int, newPrice: Double) {
+        _items.value = _items.value?.let {
+            it.slice(0 until position)
+                .plus(it[position].copy(unitPrice = newPrice))
+                .plus(it.slice(position+1 until it.size))
+        }
+    }
+
+    fun editItemQuantity(position: Int, newQuantity: Int) {
+        _items.value = _items.value?.let {
+            it.slice(0 until position)
+                .plus(it[position].copy(quantity = newQuantity))
+                .plus(it.slice(position+1 until it.size))
+        }
+    }
+
 }

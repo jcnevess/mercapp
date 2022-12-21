@@ -4,10 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import br.com.wildsnow.mercapp.R
 import br.com.wildsnow.mercapp.databinding.ListItemHomeBinding
+import com.google.android.material.snackbar.Snackbar
 
 class HomeListAdapter(private val homeViewModel: HomeViewModel) :
     ListAdapter<CartItem, HomeListAdapter.ViewHolder>(DiffCallback()) {
@@ -27,6 +30,11 @@ class HomeListAdapter(private val homeViewModel: HomeViewModel) :
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ListItemHomeBinding.inflate(layoutInflater, parent, false)
+
+                binding.itemQuantityPicker.minValue = 1
+                binding.itemQuantityPicker.maxValue = Int.MAX_VALUE
+                binding.itemQuantityPicker.wrapSelectorWheel = false
+
                 return ViewHolder(binding)
             }
         }
@@ -34,20 +42,76 @@ class HomeListAdapter(private val homeViewModel: HomeViewModel) :
         fun bind(item: CartItem, homeViewModel: HomeViewModel) {
             binding.product = item
 
-            binding.itemNameEdit.setOnEditorActionListener { textView, actionId, keyEvent ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    homeViewModel.editItemName(adapterPosition, binding.itemNameEdit.text.toString())
-                    binding.itemNameEdit.visibility = View.INVISIBLE
-                    binding.itemNameText.visibility = View.VISIBLE
-                    return@setOnEditorActionListener true
-                }
-                return@setOnEditorActionListener false
+            binding.itemQuantityText.setOnClickListener {
+                binding.itemQuantityText.visibility = View.INVISIBLE
+                binding.itemQuantityPicker.visibility = View.VISIBLE
+            }
+
+            binding.itemQuantityPicker.value = item.quantity
+            binding.itemQuantityPicker.setOnValueChangedListener { picker, oldValue, newValue ->
+                homeViewModel.editItemQuantity(adapterPosition, newValue)
             }
 
             binding.itemNameText.setOnClickListener {
                 binding.itemNameText.visibility = View.INVISIBLE
                 binding.itemNameEdit.visibility = View.VISIBLE
             }
+
+            binding.itemNameEdit.setOnEditorActionListener { editText, actionId, keyEvent ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (nameIsValid(editText.text.toString())) {
+                        homeViewModel.editItemName(
+                            adapterPosition,
+                            editText.text.toString()
+                        )
+                        binding.itemNameEdit.visibility = View.INVISIBLE
+                        binding.itemNameText.visibility = View.VISIBLE
+                        return@setOnEditorActionListener true
+                    } else {
+                        showErrorMessage()
+                    }
+                }
+                return@setOnEditorActionListener false
+            }
+
+            binding.itemUnitPriceText.setOnClickListener {
+                binding.itemUnitPriceText.visibility = View.INVISIBLE
+                binding.itemUnitPriceEdit.visibility = View.VISIBLE
+            }
+
+            binding.itemUnitPriceEdit.setOnEditorActionListener { editText, actionId, keyEvent ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (priceIsValid(editText.text.toString())) {
+                        homeViewModel.editItemUnitPrice(
+                            adapterPosition,
+                            binding.itemUnitPriceEdit.text.toString().replace(",", ".").toDouble()
+                        )
+                        binding.itemUnitPriceEdit.visibility = View.INVISIBLE
+                        binding.itemUnitPriceText.visibility = View.VISIBLE
+                        return@setOnEditorActionListener true
+                    } else {
+                        showErrorMessage()
+                    }
+                }
+                return@setOnEditorActionListener false
+            }
+
+        }
+
+        private fun nameIsValid(productName: String?): Boolean {
+            return !productName.isNullOrBlank()
+        }
+
+        private fun priceIsValid(price: String?): Boolean {
+            return !price.isNullOrBlank() && price.matches(Regex("^[0-9]*[.,][0-9]*$|^[0-9]*$"))
+        }
+
+        private fun showErrorMessage() {
+            Snackbar.make(
+                itemView,
+                R.string.invalid_input_error,
+                Snackbar.LENGTH_LONG
+            ).show()
         }
     }
 
