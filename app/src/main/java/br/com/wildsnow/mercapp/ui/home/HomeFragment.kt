@@ -2,7 +2,6 @@ package br.com.wildsnow.mercapp.ui.home
 
 import android.os.Bundle
 import android.text.Editable
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,12 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import br.com.wildsnow.mercapp.R
 import br.com.wildsnow.mercapp.databinding.FragmentHomeBinding
 import com.google.android.material.snackbar.Snackbar
 
 
-private const val QUANTITY_PICKER_MIN_VALUE = 1
-private const val QUANTITY_PICKER_MAX_VALUE = Int.MAX_VALUE
 /**
  * A simple [Fragment] subclass.
  */
@@ -34,16 +32,13 @@ class HomeFragment : Fragment() {
 
         binding.homeViewModel = homeViewModel
 
-        binding.quantityPicker.apply {
-            minValue = QUANTITY_PICKER_MIN_VALUE
-            maxValue = QUANTITY_PICKER_MAX_VALUE
-            wrapSelectorWheel = false
-        }
-
         binding.productNameEdit.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if(nameIsValid()) {
-                    homeViewModel.doneAddingItem(binding.productNameEdit.text.toString(), binding.quantityPicker.value)
+                if (amountIsValid() && nameIsValid()) {
+                    homeViewModel.doneAddingItem(
+                        binding.productNameEdit.text.toString(),
+                        binding.productAmountEdit.text.toString().toInt()
+                    )
                 } else {
                     showErrorMessage()
                 }
@@ -62,14 +57,19 @@ class HomeFragment : Fragment() {
         }
 
         homeViewModel.addItemEvent.observe(viewLifecycleOwner) { isAddingItem ->
-            if(!isAddingItem) {
+            if (!isAddingItem) {
                 binding.apply {
-                    quantityPicker.visibility = View.INVISIBLE
-                    quantityPicker.value = QUANTITY_PICKER_MIN_VALUE
+                    productAmountEdit.visibility = View.INVISIBLE
+                    productAmountEdit.text = Editable.Factory().newEditable("")
                     productNameEdit.visibility = View.INVISIBLE
                     productNameEdit.text = Editable.Factory().newEditable("")
-                    addItemButton.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_add_24, activity?.theme))
-                    addItemButton.setOnClickListener { homeViewModel!!.startAddingItem() }
+                    addItemButton.setImageDrawable(
+                        resources.getDrawable(
+                            R.drawable.ic_baseline_add_24,
+                            activity?.theme
+                        )
+                    )
+                    addItemButton.setOnClickListener { homeViewModel?.startAddingItem() }
 
                     // Hide keyboard
                     view?.let {
@@ -80,12 +80,23 @@ class HomeFragment : Fragment() {
 
             } else {
                 binding.apply {
-                    quantityPicker.visibility = View.VISIBLE
+                    productAmountEdit.visibility = View.VISIBLE
                     productNameEdit.visibility = View.VISIBLE
-                    addItemButton.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_done_24, activity?.theme))
+                    productAmountEdit.requestFocus()
+                    productAmountEdit.requestKeyboard()
+
+                    addItemButton.setImageDrawable(
+                        resources.getDrawable(
+                            R.drawable.ic_baseline_done_24,
+                            activity?.theme
+                        )
+                    )
                     addItemButton.setOnClickListener {
-                        if(nameIsValid()) {
-                            homeViewModel!!.doneAddingItem(productNameEdit.text.toString(), quantityPicker.value)
+                        if (amountIsValid() && nameIsValid()) {
+                            homeViewModel!!.doneAddingItem(
+                                productNameEdit.text.toString(),
+                                productAmountEdit.text.toString().toInt()
+                            )
                         } else {
                             showErrorMessage()
                         }
@@ -96,6 +107,8 @@ class HomeFragment : Fragment() {
 
         return binding.root
     }
+
+    private fun amountIsValid() = !binding.productAmountEdit.text.isNullOrBlank()
 
     private fun nameIsValid() = !binding.productNameEdit.text.isNullOrBlank()
 

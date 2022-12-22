@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="homeViewModel"
             type="br.com.wildsnow.mercapp.ui.home.HomeViewModel" />
@@ -13,8 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.HomeFragment"
-        android:paddingTop="@dimen/marginDefault">
+        android:paddingTop="@dimen/marginDefault"
+        tools:context=".ui.home.HomeFragment">
 
         <TextView
             android:id="@+id/listNameText"
@@ -23,50 +24,57 @@
             android:layout_marginTop="@dimen/verticalMarginComponents"
             android:text="@{homeViewModel.name}"
             android:textSize="@dimen/textSize"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="List" />
 
-        <NumberPicker
-            android:id="@+id/quantityPicker"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/productAmountEdit"
+            android:layout_width="0dp"
             android:layout_height="0dp"
+            android:autofillHints="none"
+            android:hint="@string/hint_amount"
+            android:imeOptions="actionNext"
+            android:inputType="number"
+            android:textSize="@dimen/textSize"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/productNameEdit"
             app:layout_constraintEnd_toStartOf="@+id/productNameEdit"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/productNameEdit"
-            android:visibility="invisible"
-            tools:visibility="visible"/>
+            app:layout_constraintWidth_percent=".15"
+            tools:visibility="visible" />
 
         <EditText
             android:id="@+id/productNameEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:autofillHints="none"
+            android:hint="@string/hint_name"
+            android:imeOptions="actionDone"
+            android:inputType="text"
             android:textSize="@dimen/textSize"
-            android:hint="@string/hint_product"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/addItemButton"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/quantityPicker"
+            app:layout_constraintStart_toEndOf="@+id/productAmountEdit"
             app:layout_constraintTop_toBottomOf="@id/listNameText"
-            android:visibility="invisible"
-            tools:visibility="visible"
-            android:autofillHints="none"
-            android:inputType="text"
-            android:imeOptions="actionDone"/>
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/addItemButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/cd_add_item"
             android:src="@drawable/ic_baseline_add_24"
+            app:layout_constraintBottom_toBottomOf="@id/productNameEdit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/productNameEdit"
             app:layout_constraintTop_toTopOf="@id/productNameEdit"
-            app:layout_constraintBottom_toBottomOf="@id/productNameEdit"
-            android:contentDescription="@string/cd_add_item" />
+            app:layout_constraintWidth_percent=".075" />
 
 
         <ScrollView

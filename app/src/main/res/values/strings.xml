@@ -6,4 +6,7 @@
     <string name="cd_add_item">Add item</string>
     <string name="invalid_input_error">Enter a valid value</string>
     <string name="formatter_currency">%.2f</string>
+    <string name="hint_amount">Amount</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_unit_price">Unit Price</string>
 </resources>

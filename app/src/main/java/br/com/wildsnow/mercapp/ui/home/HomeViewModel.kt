@@ -3,9 +3,8 @@ package br.com.wildsnow.mercapp.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import timber.log.Timber
 
-class HomeViewModel: ViewModel(){
+class HomeViewModel : ViewModel() {
 
     val name = "Grocery List"
 
@@ -21,17 +20,17 @@ class HomeViewModel: ViewModel(){
         _addItemEvent.value = true
     }
 
-    fun doneAddingItem(productName: String, productQuantity: Int) {
-        val item = CartItem((_items.value?.size ?: 0) +1L, productName, productQuantity, 0.0)
+    fun doneAddingItem(productName: String, productAmount: Int) {
+        val item = CartItem((_items.value?.size ?: 0) + 1L, productName, productAmount, 0.0)
         _items.value = _items.value?.plus(item)
         _addItemEvent.value = false
     }
 
-    fun editItemName(position:Int, newName: String) {
+    fun editItemName(position: Int, newName: String) {
         _items.value = _items.value?.let {
             it.slice(0 until position)
                 .plus(it[position].copy(name = newName))
-                .plus(it.slice(position+1 until it.size))
+                .plus(it.slice(position + 1 until it.size))
         }
     }
 
@@ -39,15 +38,15 @@ class HomeViewModel: ViewModel(){
         _items.value = _items.value?.let {
             it.slice(0 until position)
                 .plus(it[position].copy(unitPrice = newPrice))
-                .plus(it.slice(position+1 until it.size))
+                .plus(it.slice(position + 1 until it.size))
         }
     }
 
-    fun editItemQuantity(position: Int, newQuantity: Int) {
+    fun editItemAmount(position: Int, newAmount: Int) {
         _items.value = _items.value?.let {
             it.slice(0 until position)
-                .plus(it[position].copy(quantity = newQuantity))
-                .plus(it.slice(position+1 until it.size))
+                .plus(it[position].copy(amount = newAmount))
+                .plus(it.slice(position + 1 until it.size))
         }
     }
 

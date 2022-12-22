@@ -1,16 +1,17 @@
 package br.com.wildsnow.mercapp.ui.home
 
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import br.com.wildsnow.mercapp.R
 import br.com.wildsnow.mercapp.databinding.ListItemHomeBinding
 import com.google.android.material.snackbar.Snackbar
+import timber.log.Timber
 
 class HomeListAdapter(private val homeViewModel: HomeViewModel) :
     ListAdapter<CartItem, HomeListAdapter.ViewHolder>(DiffCallback()) {
@@ -31,10 +32,6 @@ class HomeListAdapter(private val homeViewModel: HomeViewModel) :
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ListItemHomeBinding.inflate(layoutInflater, parent, false)
 
-                binding.itemQuantityPicker.minValue = 1
-                binding.itemQuantityPicker.maxValue = Int.MAX_VALUE
-                binding.itemQuantityPicker.wrapSelectorWheel = false
-
                 return ViewHolder(binding)
             }
         }
@@ -42,14 +39,34 @@ class HomeListAdapter(private val homeViewModel: HomeViewModel) :
         fun bind(item: CartItem, homeViewModel: HomeViewModel) {
             binding.product = item
 
-            binding.itemQuantityText.setOnClickListener {
-                binding.itemQuantityText.visibility = View.INVISIBLE
-                binding.itemQuantityPicker.visibility = View.VISIBLE
+            binding.itemAmountText.setOnClickListener {
+                binding.itemAmountText.visibility = View.INVISIBLE
+                binding.itemAmountEdit.visibility = View.VISIBLE
+                binding.itemAmountEdit.requestFocus()
+                binding.itemAmountEdit.requestKeyboard()
             }
 
-            binding.itemQuantityPicker.value = item.quantity
-            binding.itemQuantityPicker.setOnValueChangedListener { picker, oldValue, newValue ->
-                homeViewModel.editItemQuantity(adapterPosition, newValue)
+            binding.multiplierText.setOnClickListener {
+                binding.itemAmountText.visibility = View.INVISIBLE
+                binding.itemAmountEdit.visibility = View.VISIBLE
+                binding.itemAmountEdit.requestFocus()
+                binding.itemAmountEdit.requestKeyboard()
+            }
+
+            binding.itemAmountEdit.text = Editable.Factory().newEditable(item.amount.toString())
+            binding.itemAmountEdit.setOnEditorActionListener { editText, actionId, keyEvent ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (amountIsValid(editText.text.toString())) {
+                        homeViewModel.editItemAmount(
+                            adapterPosition,
+                            editText.text.toString().toInt()
+                        )
+                        binding.itemAmountEdit.visibility = View.INVISIBLE
+                        binding.itemAmountText.visibility = View.VISIBLE
+                        return@setOnEditorActionListener true
+                    }
+                }
+                return@setOnEditorActionListener false
             }
 
             binding.itemNameText.setOnClickListener {
@@ -96,6 +113,10 @@ class HomeListAdapter(private val homeViewModel: HomeViewModel) :
                 return@setOnEditorActionListener false
             }
 
+        }
+
+        private fun amountIsValid(amount: String?): Boolean {
+            return !amount.isNullOrBlank()
         }
 
         private fun nameIsValid(productName: String?): Boolean {
