@@ -50,4 +50,10 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+    fun getTotalPrice(): Double {
+        return _items.value?.map { it.getTotalPrice() }
+            ?.reduceOrNull { a, b -> a.plus(b) }
+            ?: 0.0
+    }
+
 }

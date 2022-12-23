@@ -8,5 +8,5 @@ data class CartItem(
     var bought: Boolean = false
 ) {
 
-    fun getTotalPrice() = unitPrice?.times(amount)
+    fun getTotalPrice(): Double = unitPrice?.times(amount) ?: 0.0
 }

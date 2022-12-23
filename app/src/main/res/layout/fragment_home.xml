@@ -23,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/verticalMarginComponents"
             android:text="@{homeViewModel.name}"
-            android:textSize="@dimen/textSize"
+            android:textSize="@dimen/title_size"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -78,10 +79,10 @@
 
 
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/verticalMarginComponents"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/addItemButton">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -91,5 +92,35 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </ScrollView>
+
+        <TextView
+            android:id="@+id/totalPriceLabelText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/verticalMarginComponents"
+            android:text="@string/total_price_text"
+            android:textSize="@dimen/textSize"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/totalPriceText"
+            app:layout_constraintTop_toBottomOf="@id/scrollView"
+            app:layout_constraintVertical_bias="1" />
+
+        <TextView
+            android:id="@+id/totalPriceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/verticalMarginComponents"
+            android:paddingHorizontal="@dimen/marginDefault"
+            android:text="@{@string/formatter_currency(homeViewModel.getTotalPrice())}"
+            android:textSize="@dimen/textSize"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/totalPriceLabelText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/scrollView"
+            tools:text="2000,00" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

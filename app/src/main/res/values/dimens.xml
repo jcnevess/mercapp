@@ -4,4 +4,5 @@
     <dimen name="marginDefault">10dp</dimen>
     <dimen name="textSize">15sp</dimen>
     <dimen name="list_item_padding">8dp</dimen>
+    <dimen name="title_size">16sp</dimen>
 </resources>

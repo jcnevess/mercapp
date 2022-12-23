@@ -53,6 +53,7 @@ class HomeFragment : Fragment() {
         homeViewModel.items.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.submitList(it)
+                binding.totalPriceText.text = String.format("%,.2f", homeViewModel.getTotalPrice())
             }
         }
 
